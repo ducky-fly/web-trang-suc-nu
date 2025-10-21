@@ -3,6 +3,9 @@ import React from "react";
 import Filters from "./components/Filters";
 import ProductGrid from "./components/ProductGrid";
 import ringData from "./components/data";
+import { toIntegerVND } from "./utils/price";
+
+const parsePrice = toIntegerVND;
 
 const Page = () => {
   const [data, setData] = React.useState(ringData);
@@ -11,9 +14,10 @@ const Page = () => {
   // Filter & sort state
   const [priceRange, setPriceRange] = React.useState(""); // "2"|"2"|"3"|"4"
   const [color, setColor] = React.useState(""); // "5"|"6"|"7"
+  const [material, setMaterial] = React.useState(""); // "8"|"9"
   const [sortBy, setSortBy] = React.useState(""); // """", "priceAsc","priceDesc","nameAsc"
 
-  const parsePrice = (item) => Number(String(item).replace(/\./g, "").trim()) || 0;
+  // parser/formatter handle cả "30000000.00" và "30.000.000"
 
   // danh sách được lọc + sắp xếp
   const displayedData = React.useMemo(() => {
@@ -59,6 +63,16 @@ const Page = () => {
       );
     }
 
+    // lọc theo chất liệu
+    if (material) {
+      let materialName = material;
+      if (material === "8") materialName = "vang";
+      else if (material === "9") materialName = "kim cuong";
+      list = list.filter(
+        (item) => String(item.material).toLowerCase() === String(materialName).toLowerCase()
+      );
+    }
+
     // sắp xêp
     if (sortBy === "priceAsc") {
       list.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
@@ -69,7 +83,7 @@ const Page = () => {
     }
 
     return list;
-  }, [data, priceRange, color, sortBy]);
+  }, [data, priceRange, color, material, sortBy]);
 
   const toggleFavorite = (productId) => {
     setFavorites((prev) =>
@@ -82,10 +96,11 @@ const Page = () => {
   // Handlers passed to child components
   const handlePriceChange = (value) => setPriceRange(value);
   const handleColorChange = (value) => setColor(value);
+  const handleMaterialChange = (value) => setMaterial(value);
   const handleSortChange = (value) => setSortBy(value);
 
   return (
-    <div className=" flex flex-col items-center gap-[30px]">
+    <div className=" flex flex-col items-center gap-[30px] mt-[40px]">
       <div className=" w-[90%]">
         <p className=" text-[32px] text-[#9B8D6F] text-left">Nhẫn</p>
       </div>
@@ -94,9 +109,11 @@ const Page = () => {
         <Filters
           priceRange={priceRange}
           color={color}
+          material={material}
           sortBy={sortBy}
           onPriceRangeChange={handlePriceChange}
           onColorChange={handleColorChange}
+          onMaterialChange={handleMaterialChange}
           onSortChange={handleSortChange}
         />
 
@@ -112,4 +129,3 @@ const Page = () => {
 };
 
 export default Page;
-

@@ -61,16 +61,17 @@ const Nav = () => {
       <hr className="h-[2px] bg-[#9B8D6F] border-[white]"></hr>
       {/* menubar */}
       <div className="h-[100px] flex flex-row justify-between items-center mx-[70px]">
-        <div><a>Nhẫn</a></div>
-        <div><a>Bông tai</a></div>
-        <div><a>Dây chuyền</a></div>
-        <div><a>Vòng tay</a></div>
+        <Link href={"/ring"}>Nhẫn</Link>
+        <Link href={"/earring"}>Bông tai</Link>
+        <Link href={"/necklace"}>Dây chuyền</Link>
+        <Link href={"/bracelet"}>Vòng tay</Link>
         <div><a>Ưu đãi</a></div>
         <div className="w-[350px] h-[50px] border rounded-full flex items-center px-5">
             <input className="flex-1 outline-none placeholder-[#C0C0C0]" placeholder="Tìm kiếm"></input>
             <SearchIcon/>
         </div>
       </div>
+      <hr className="h-[2px] bg-[#9B8D6F] border-[white]"></hr>
     </div>
   );
 };
